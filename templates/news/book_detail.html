@@ -1,0 +1,18 @@
+{% extends 'news/layout.html' %}
+{% block title %}Форма{% endblock %}
+{% block content %}
+<h1>{{ book.title }}</h1>
+<p><strong>Автор:</strong> {{ book.author }}</p>
+<p><strong>Дата публикации:</strong> {{ book.published_date }}</p>
+
+<h2>Комментарии:</h2>
+<ul>
+    {% for comment in comments %}
+        <li>{{ comment.content }} ({{ comment.created_at }})</li>
+    {% empty %}
+        <li>Нет комментариев</li>
+    {% endfor %}
+</ul>
+
+<a href="{% url 'book_list' %}">Назад к списку</a>
+{% endblock %}

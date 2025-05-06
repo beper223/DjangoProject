@@ -1,0 +1,13 @@
+{% extends 'news/layout.html' %}
+{% block title %}Вход в систему{% endblock %}
+{% block content %}
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-primary mb-3">Войти</button>
+    <a href="{% url 'register' %}" class="btn btn-primary mb-3">Зарегистрироваться</a>
+</form>
+{% if form.errors %}
+    <p>Неверный логин или пароль</p>
+{% endif %}
+{% endblock %}

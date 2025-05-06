@@ -56,8 +56,20 @@ class BookDetailView(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        context['form'] = CommentForm()
         context['comments'] = self.object.comments.all()
         return context
+
+    def post(self, request, *args, **kwargs):
+        book = self.get_object()
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            comment = form.save(commit=False)
+            comment.book = book
+            comment.user = request.user
+            comment.save()
+            return self.get(request, *args, **kwargs)
+        return self.render_to_response(self.get_context_data(form=form))
 
 class BookCreateView(CreateView):
     model = Book

@@ -5,14 +5,29 @@
 <p><strong>Автор:</strong> {{ book.author }}</p>
 <p><strong>Дата публикации:</strong> {{ book.published_date }}</p>
 
-<h2>Комментарии:</h2>
-<ul>
-    {% for comment in comments %}
-        <li>{{ comment.content }} ({{ comment.created_at }})</li>
-    {% empty %}
-        <li>Нет комментариев</li>
-    {% endfor %}
-</ul>
-
+<h3 class="mb-4">Комментарии:</h3>
+<div class="mb-3">
+  {% for comment in comments %}
+    <div class="card mb-3">
+      <div class="card-body">
+        <h6 class="card-subtitle mb-1 text-muted">{{ comment.user.username }}</h6>
+        <small class="text-muted">{{ comment.created_at|date:"d.m.Y H:i" }}</small>
+        <p class="card-text mt-2">{{ comment.text }}</p>
+      </div>
+    </div>
+  {% empty %}
+    <p>Комментариев пока нет.</p>
+  {% endfor %}
+</div>
+{% if user.is_authenticated %}
+  <h4>Добавить комментарий</h4>
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Отправить</button>
+  </form>
+{% else %}
+  <p><a href="{% url 'login' %}">Войдите</a>, чтобы оставить комментарий.</p>
+{% endif %}
 <a href="{% url 'book_list' %}">Назад к списку</a>
 {% endblock %}

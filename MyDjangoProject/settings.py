@@ -118,6 +118,11 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
+# Для разработки (если у тебя есть общая папка "static" в корне проекта)
+STATICFILES_DIRS = [
+    BASE_DIR / "static",  # если ты используешь Path
+    # os.path.join(BASE_DIR, 'static')  # если BASE_DIR это строка
+]
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 

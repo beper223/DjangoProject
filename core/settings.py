@@ -51,7 +51,7 @@ MIDDLEWARE = [
     'news.middleware.LoginRequiredMiddleware'
 ]
 
-ROOT_URLCONF = 'MyDjangoProject.urls'
+ROOT_URLCONF = 'core.urls'
 
 TEMPLATES = [
     {
@@ -69,7 +69,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'MyDjangoProject.wsgi.application'
+WSGI_APPLICATION = 'core.wsgi.application'
 
 
 # Database

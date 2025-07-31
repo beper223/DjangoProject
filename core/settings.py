@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-&fe)zkxhd+_90ukv2&fu=3^*m63&#8!2(k_9re80!imvnjc^!s
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['filmsearch.ddns.net', '127.0.0.1', 'localhost']
 
 
 # Application definition

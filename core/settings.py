@@ -11,21 +11,24 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
 from pathlib import Path
+from environ import Env
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+env = Env()
+env.read_env(BASE_DIR / '.env')
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-&fe)zkxhd+_90ukv2&fu=3^*m63&#8!2(k_9re80!imvnjc^!s'
+SECRET_KEY = env.str('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = env.bool('DEBUG')
 
-ALLOWED_HOSTS = ['filmsearch.ddns.net', '127.0.0.1', 'localhost']
+ALLOWED_HOSTS = env.list('ALLOWED_HOSTS')
 
 
 # Application definition
@@ -75,13 +78,27 @@ WSGI_APPLICATION = 'core.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
+# }
+if env('DATABASE_URL', default=''):
+    DATABASES = {
+        'default': env.db()
     }
-}
-
+else:
+    DATABASES = {
+            'default': {
+                'ENGINE': 'django.db.backends.postgresql',
+                'NAME': env.str('POSTGRES_DB'),
+                'HOST': env.str('POSTGRES_HOST'),
+                'PORT': env.int('POSTGRES_PORT'),
+                'USER': env.str('POSTGRES_USER'),
+                'PASSWORD': env.str('POSTGRES_PASSWORD'),
+            }
+        }
 
 # Password validation
 # https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
@@ -123,6 +140,9 @@ STATICFILES_DIRS = [
     BASE_DIR / "static",  # если ты используешь Path
     # os.path.join(BASE_DIR, 'static')  # если BASE_DIR это строка
 ]
+
+STATIC_ROOT = BASE_DIR / 'staticfiles' # Для сбора статики в продакшене
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 

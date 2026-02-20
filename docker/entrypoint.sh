@@ -8,10 +8,14 @@ done
 
 echo "PostgreSQL started"
 
+# Права на static
+#mkdir -p /app/staticfiles
+#chown -R django:django /app/staticfiles
+
 # Миграции
 python manage.py migrate --noinput
 
 # Сбор статики
 python manage.py collectstatic --noinput
 
-exec "$@"
+exec gosu django "$@"

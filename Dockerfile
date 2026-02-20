@@ -30,6 +30,7 @@ WORKDIR /app
 RUN apt-get update && apt-get install -y \
     libpq5 \
     netcat-openbsd \
+    gosu \
     && rm -rf /var/lib/apt/lists/*
 
 # Создаём пользователя
@@ -50,18 +51,16 @@ RUN chmod +x /entrypoint.sh
 
 RUN chown -R django:django /app
 
-USER django
+#USER django
 
 EXPOSE 8000
 
 ENTRYPOINT ["/entrypoint.sh"]
 
-#CMD ["gunicorn", "core.wsgi:application",
-#     "--bind", "0.0.0.0:8000",
-#     "--workers", "3",
-#     "--threads", "2",
-#     "--timeout", "120",
-#     "--access-logfile", "-",
-#     "--error-logfile", "-"]
-
-CMD ["gunicorn", "core.wsgi:application", "--bind", "0.0.0.0:8000", "--workers", "3"]
+CMD ["gunicorn", "core.wsgi:application", \
+     "--bind", "0.0.0.0:8000", \
+     "--workers", "3", \
+     "--threads", "2", \
+     "--timeout", "120", \
+     "--access-logfile", "-", \
+     "--error-logfile", "-"]
